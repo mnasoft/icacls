@@ -1,9 +1,9 @@
 ;;;; icacls.asd
 
-(asdf:defsystem #:icacls
+(defsystem #:icacls
   :description "Describe icacls here"
-  :author "Your Name <your.name@example.com>"
-  :license "Specify license here"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :components ((:file "package")
                (:file "icacls")))
