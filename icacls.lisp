@@ -1,70 +1,65 @@
 ;;;; icacls.lisp
 
+(annot:enable-annot-syntax)
+
 (in-package #:cl-user)
 
 (defpackage #:icacls
-  (:use #:cl)
-  (:export mkdir-home-all-comps mkdir-home))
-
-;;;;(declaim (optimize (speed 0) (sayfety 3) (debug 3)))
+  (:use #:cl))
 
 (in-package #:icacls)
 
 ;;; "icacls" goes here. Hacks and glory await!
 
 (defparameter *user-lst*
-  '(("anfyod" "Федоров А.Н."      )
-    ("avgris" "Гришина А.В."      )
-    ("avpete" "Петельчиц А.В."    )
-    ("aysnig" "Снигирь А.Ю."      )
-    ("dvryab" "Рябов Д.В."        )
-    ("epiven" "Пивень Е.Н."       )
-    ("evkoro" "Коротич Е.В."      )
-    ("gabank" "Банкулова Г.А."    )
-    ("iptroy" "Тройнич И.П."      )
-    ("mvivan" "Иванов М.В."       )
-    ("namatv" "Матвеев Н.А."      )
-    ("opgolo" "Головерда О.П."    )
-    ("svdavl" "Давлеткужин С.В."  )
-    ("tdrach" "Зинченко Т.Ю."     )
-    ("vgvant" "Ванцовский В.Г."   )))
+  '(                            ("vgvant" "Ванцовский В.Г." )
+    ("tdrach" "Зинченко Т.Ю." ) ("svdavl" "Давлеткужин С.В.")
+    ("mvivan" "Иванов М.В."   ) ("opgolo" "Головерда О.П."  )
+    (                            "dvryab" "Рябов Д.В."      )
+    ("iptroy" "Тройнич И.П."  ) ("avgris" "Гришина А.В."    )
+    ("avpete" "Петельчиц А.В.") ("gabank" "Банкулова Г.А."  )
+    ("evkoro" "Коротич Е.В."  ) ("epiven" "Пивень Е.Н."     )
+    ("anfyod" "Федоров А.Н."  ) ("namatv" "Матвеев Н.А."    ))
+  "Список действующих пользователей отдела 11")
 
 (defparameter *user-lst-depricated*
-  '(("eabuda" "Буданова Е.А." )
+  '(("aysnig" "Снигирь А.Ю."  )
+    ("eabuda" "Буданова Е.А." )
     ("evbush" "Симонова Е.В." )
     ("iesido" "Сидоров И.Е."  )
     ("nabuda" "Буданова Н.А." )
     ("vvvilk" "Вилкул В.В."   )
-    ("yvshub" "Шубельняк Ю.В.")))
+    ("yvshub" "Шубельняк Ю.В."))
+  "Список недействующих пользователей отдела 11")
 
 (defparameter *comp-lst*
-  '(("ko11-118667" "tdrach")
-    ("n118955"     "mvivan")
-    ("n118389"     "iptroy")
-    ("n000171"     "avpete")
-    ("n118944"     "aysnig")
-    ("ko11-133148" "anfyod")
-    
-    ("ko11-118665" "vgvant")
-    ("n118940"     "svdavl")
-    ("n118965"     "opgolo")
-    ("n132866"     "dvryab")
-    ("ko11-133037" "avgris")
-    ("n118957"     "gabank")
-    ("n133619"     "epiven")
-    ("ko11-118383" "namatv")))
+  '(                     ("n133875"     "vgvant")
+    ("n118944" "tdrach") ("n118940"     "svdavl")
+    ("n118955" "mvivan") ("n118965"     "opgolo")
+    (                     "n132866"     "dvryab")
+    ("n118389" "iptroy") ("n133037"     "avgris")
+    ("n000171" "avpete") ("n118957"     "gabank")
+    ("n118665" "evkoro") ("n133619"     "epiven")
+    ("n133148" "anfyod") ("ko11-118383" "namatv"))
+  "Закрепление ПК за пользователями."
+  )
 
-(defun mkdir-home(comp home &key (user-lst *user-lst*) (out (make-string-output-stream)))
-  "Пример использования
+@export
+@annot.doc:doc
+"@b(Описание:) функция @b(mkdir-home) 
+Пример использования:
 ;;;; (mkdir-home \"n118965\" \"home1\")
 "
+(defun mkdir-home (comp home &key (user-lst *user-lst*) (out t))
   (format out "icacls \\\\~A\\d$ /grant:r \"NT AUTHORITY\\система\":(OI)(CI)(F)~%" comp)
   (format out "icacls \\\\~A\\d$ /grant:r \"BUILTIN\\Администраторы\":(OI)(CI)(F)~%" comp)
   (format out "icacls \\\\~A\\d$ /grant:r \"ZORYA\\Отдел 11 - все\":(OI)(CI)(RX)~%" comp)
+  (format out "~%")
   (format out "mkdir  \\\\~A\\d$\\~A~%" comp home)
   (format out "icacls \\\\~A\\d$\\~A /grant:r \"NT AUTHORITY\\система\":(OI)(CI)(F)~%" comp home)
   (format out "icacls \\\\~A\\d$\\~A /grant:r \"BUILTIN\\Администраторы\":(OI)(CI)(F)~%" comp home)
   (format out "icacls \\\\~A\\d$\\~A /grant:r \"ZORYA\\Отдел 11 - все\":(OI)(CI)(RX)~%" comp home)
+  (format out "~%")
   (mapc
    #'(lambda (uname)
        (format out "mkdir  \\\\~A\\d$\\~A\\_~A~%" comp home (first uname))
@@ -74,6 +69,7 @@
 	       comp home (first uname) (first uname))
        (format out "icacls \\\\~A\\d$\\~A\\_~A /inheritance:e~%"
 	       comp home (first uname))
+       (format out "~%")
        (format out "mkdir  \\\\~A\\d$\\~A\\_~A\\_private~%"
 	       comp home (first uname))
        (format out "icacls \\\\~A\\d$\\~A\\_~A\\_private /inheritance:d~%"
@@ -85,24 +81,44 @@
        (format out "icacls \\\\~A\\d$\\~A\\_~A\\_private /grant:r ZORYA\\~A:(RX,W)~%"
 	       comp home (first uname) (first uname))
        (format out "icacls \\\\~A\\d$\\~A\\_~A\\_private /grant:r ZORYA\\~A:(OI)(CI)(IO)(M)~%"
-	       comp home (first uname) (first uname)))
-   user-lst)
-  (get-output-stream-string out))
+	       comp home (first uname) (first uname))
+       (format out "~%"))
+   user-lst))
 
-;;;;(format t (mkdir-home "ko11-118383" "home1"))
+@export
+@annot.doc:doc
+"@b(Описание:) функция @b(mkdir-home) 
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+  (mkdir-home \"n118965\" \"home1\")
+@end(code)
+"
+(defun mkdir-home-bat (comp home &key (user-lst *user-lst*))
+  (let ((fname (concatenate 'string "~/" comp "-" home ".bat")))
+    (with-open-file (out fname
+			 :direction :output
+			 :if-exists :supersede)
+      (mkdir-home comp home :user-lst user-lst :out out))
+    (format t "~A" fname)))
 
 
-(defun mkdir-home-all-comps(home &key (user-lst *user-lst*) (comp-list *comp-lst*) (out (make-string-output-stream)))
-  "Пример использования:
-;;;; (mkdir-home-all-comps \"home1\")"
-  (mapc
-   #'(lambda (comp)
-       (format out (mkdir-home (first comp) home  :user-lst user-lst)))
-   comp-list)
-  (get-output-stream-string out))
+@export
+@annot.doc:doc
+"@b(Описание:) функция @b(mkdir-home-all-comps-bat)
 
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (mkdir-home-all-comps \"home1\")
+@end(code)
+"
+(defun mkdir-home-all-comps-bat (home &key (user-lst *user-lst*) (comp-list *comp-lst*))
+  (let ((fname (concatenate 'string "~/" "all-computers" "-" home ".bat")))
+    (with-open-file (out fname
+			 :direction :output
+			 :if-exists :supersede)
+      (mapc #'(lambda (comp) (mkdir-home (first comp) home :user-lst user-lst :out out))
+	    comp-list))
+    (format t "~A" fname)))
 
-;;;;(format t (mkdir-home-all-comps "home1"))
-
-
-
+;;;; (mkdir-home-bat "ko11-118383" "home1")
