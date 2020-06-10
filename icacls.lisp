@@ -76,12 +76,12 @@
 	       comp home (first uname))
        (format out "icacls \\\\~A\\d$\\~A\\_~A\\_private /remove ZORYA\\~A~%"
 	       comp home (first uname) (first uname))
-       (format out "icacls \\\\~A\\d$\\~A\\_~A\\_private /remove \"ZORYA\\Отдел 11 - все\"~%"
-	       comp home (first uname))
        (format out "icacls \\\\~A\\d$\\~A\\_~A\\_private /grant:r ZORYA\\~A:(RX,W)~%"
 	       comp home (first uname) (first uname))
        (format out "icacls \\\\~A\\d$\\~A\\_~A\\_private /grant:r ZORYA\\~A:(OI)(CI)(IO)(M)~%"
 	       comp home (first uname) (first uname))
+       (format out "icacls \\\\~A\\d$\\~A\\_~A\\_private /remove \"ZORYA\\Отдел 11 - все\"~%"
+	       comp home (first uname))
        (format out "~%"))
    user-lst))
 
@@ -121,4 +121,20 @@
 	    comp-list))
     (format t "~A" fname)))
 
-;;;; (mkdir-home-bat "ko11-118383" "home1")
+@export
+(defun help ()
+  (format t "
+
+*Задача:* создать на ПК *n133037* каталог *home1* с папками пользователей.
+
+- Выполните следующий код на Лисп:
+#+BEGIN_SRC lisp
+  (icacls:mkdir-home-bat \"n133037\" \"home1\")
+#+END_SRC
+- В редакторе /Emacs/ откройте файл ~~/n133037.bat;
+- Запустите командный интерпретатор /cmd/ от имени /Администратора/;
+- Скопируйте содержимое файла ~~/n133037.bat в командный интерпретатор /cmd/;
+- Перенесите папки пользователей из старого места в новое, используя /Explorer/.
+"))
+
+(help)
