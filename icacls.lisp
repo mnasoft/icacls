@@ -1,7 +1,5 @@
 ;;;; icacls.lisp
 
-(annot:enable-annot-syntax)
-
 (in-package #:cl-user)
 
 (defpackage #:icacls
@@ -44,13 +42,12 @@
   "Закрепление ПК за пользователями."
   )
 
-@export
-@annot.doc:doc
+(export 'mkdir-home )
+(defun mkdir-home (comp home &key (user-lst *user-lst*) (out t))
 "@b(Описание:) функция @b(mkdir-home) 
 Пример использования:
 ;;;; (mkdir-home \"n118965\" \"home1\")
 "
-(defun mkdir-home (comp home &key (user-lst *user-lst*) (out t))
   (format out "icacls \\\\~A\\d$ /grant:r \"NT AUTHORITY\\система\":(OI)(CI)(F)~%" comp)
   (format out "icacls \\\\~A\\d$ /grant:r \"BUILTIN\\Администраторы\":(OI)(CI)(F)~%" comp)
   (format out "icacls \\\\~A\\d$ /grant:r \"ZORYA\\Отдел 11 - все\":(OI)(CI)(RX)~%" comp)
@@ -85,8 +82,8 @@
        (format out "~%"))
    user-lst))
 
-@export
-@annot.doc:doc
+(export 'mkdir-home-bat )
+(defun mkdir-home-bat (comp home &key (user-lst *user-lst*))
 "@b(Описание:) функция @b(mkdir-home) 
 
  @b(Пример использования:)
@@ -94,7 +91,6 @@
   (mkdir-home \"n118965\" \"home1\")
 @end(code)
 "
-(defun mkdir-home-bat (comp home &key (user-lst *user-lst*))
   (let ((fname (concatenate 'string "~/" comp "-" home ".bat")))
     (with-open-file (out fname
 			 :direction :output
@@ -103,8 +99,8 @@
     (format t "~A" fname)))
 
 
-@export
-@annot.doc:doc
+(export 'mkdir-home-all-comps-bat )
+(defun mkdir-home-all-comps-bat (home &key (user-lst *user-lst*) (comp-list *comp-lst*))
 "@b(Описание:) функция @b(mkdir-home-all-comps-bat)
 
  @b(Пример использования:)
@@ -112,7 +108,6 @@
  (mkdir-home-all-comps \"home1\")
 @end(code)
 "
-(defun mkdir-home-all-comps-bat (home &key (user-lst *user-lst*) (comp-list *comp-lst*))
   (let ((fname (concatenate 'string "~/" "all-computers" "-" home ".bat")))
     (with-open-file (out fname
 			 :direction :output
@@ -121,7 +116,7 @@
 	    comp-list))
     (format t "~A" fname)))
 
-@export
+(export 'help )
 (defun help ()
   (format t "
 
