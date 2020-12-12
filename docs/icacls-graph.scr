@@ -1,0 +1,8 @@
+ @begin(section) @title(Графы icacls)
+  @begin(list)
+   @item(system-graph @image[src=./system-graph-icacls.gv.png]())
+   @item(call-graph   @image[src=./call-graph-icacls.gv.png]())
+   @item(symbol-graph @image[src=./symbol-graph-icacls.gv.png]())
+   @item(class-graph  @image[src=./class-graph-icacls.gv.png]())
+  @end(list)
+ @end(section)

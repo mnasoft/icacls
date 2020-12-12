@@ -1,0 +1,55 @@
+@begin(section) @title(Обзор)
+ Проект предназначен для настройки разрешений безопасности на ПК отдела 11.
+
+ При установке(переустановке) операционной системы, замене жесткого диска ГСПО
+разрешения безопасности не соответствуют разрешениям безопасности принятым
+в отделе 11 для диска D:, на котором располагается папка общего доступа @b(home),
+содержащая папки пользователей работников отдела 11.
+
+ При помощи функции @b(mkdir-home-bat) можно создать файл, выполняющий настройку
+разрешений ресурсов:
+@begin(list)
+ @item(@link[uri="D:"](D:);)
+ @item(@link[uri="D:\home"](D:\home);)
+ @item(@link[uri="D:\home\_user"](D:\home\_user);)
+ @item(@link[uri="D:\home\_user\_privat"](D:\home\_user\_privat)) 
+ @item( )
+@end(list)
+
+ @b(Пример использования:)
+
+ @b(Задача:) создать на ПК @b(n133037) каталог @b(home1) с папками пользователей.
+
+ @b(Решение:)
+
+@begin(list)
+ @item(Выполните следующий код на Лисп:)
+@end(list)
+@begin[lang=lisp](code)
+ (icacls:mkdir-home-bat "n133037" "home1")
+@end(code)
+
+@begin(list)
+ @item(В редакторе Emacs откройте файл ~/n133037.bat;)
+ @item(Запустите командный интерпретатор cmd от имени Администратора;)
+ @item(Скопируйте содержимое файла ~/n133037.bat в командный интерпретатор cmd;)
+ @item(Перенесите папки пользователей из старого места в новое, используя Explorer.)
+@end(list)
+
+@end(section)
+
+@begin(section) @title(Функции)
+ @cl:with-package[name="icacls"](
+   @cl:doc(function mkdir-home-all-comps-bat)
+   @cl:doc(function mkdir-home-bat)
+   @cl:doc(function mkdir-home)
+   @cl:doc(function help))
+@end(section)
+
+@begin(section) @title(Переменные)
+ @cl:with-package[name="icacls"](
+   @cl:doc(variable *user-lst*)
+   @cl:doc(variable *user-lst-depricated*)
+   @cl:doc(variable *comp-lst*))
+@end(section)
+

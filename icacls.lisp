@@ -1,9 +1,13 @@
 ;;;; icacls.lisp
 
-(in-package #:cl-user)
-
 (defpackage #:icacls
-  (:use #:cl))
+  (:use #:cl)
+  (:export  mkdir-home-all-comps-bat
+	    help
+	    mkdir-home
+	    mkdir-home-bat))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package #:icacls)
 
@@ -45,8 +49,11 @@
 (export 'mkdir-home )
 (defun mkdir-home (comp home &key (user-lst *user-lst*) (out t))
 "@b(Описание:) функция @b(mkdir-home) 
-Пример использования:
-;;;; (mkdir-home \"n118965\" \"home1\")
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (mkdir-home \"n118965\" \"home1\")
+@end(code)
 "
   (format out "icacls \\\\~A\\d$ /grant:r \"NT AUTHORITY\\SYSTEM\":(OI)(CI)(F)~%" comp)
   (format out "icacls \\\\~A\\d$ /grant:r \"BUILTIN\\Administrators\":(OI)(CI)(F)~%" comp)
@@ -118,8 +125,9 @@
 
 (export 'help )
 (defun help ()
+  "@b(Описание:) функция @b(help) выводит краткую справку.
+"
   (format t "
-
 *Задача:* создать на ПК *n133037* каталог *home1* с папками пользователей.
 
 - Выполните следующий код на Лисп:
@@ -133,3 +141,4 @@
 "))
 
 (help)
+

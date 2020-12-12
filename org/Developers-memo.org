@@ -1,0 +1,116 @@
+* Ссылки
+1) Операции git  [[file:~/org/sbcl/Git-memo.org][Git-memo.org]]
+2) [[file:~/org/sbcl/codex.org][Генерирование документации при помощи Codex]]
+3) http://commondoc.github.io/codex/docs/tutorial.html
+4) [[/home/namatv/.slynkrc]]
+5) Тестирование при помощи FiveAm
+   - [[https://common-lisp.net/project/fiveam/][FiveAm]]
+   - [[http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html][Tutorial]]
+   - [[https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/][Fixtures]]
+ 
+* Генерироване документациин
+#+name: codex
+#+BEGIN_SRC lisp
+  (codex:document :icacls)
+#+END_SRC
+
+#+name: graphs
+#+BEGIN_SRC lisp :var codex=codex
+    (loop
+      :for i :in
+      '(:icacls
+	)
+      :do (mnas-package:make-codex-documentation i i))
+#+END_SRC
+
+#+RESULTS: make-html
+: NIL
+
+* Публикация
+#+name: publish
+#+BEGIN_SRC shell :var graphs=graphs
+    mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
+    CDIR=`dirname $PWD | xargs basename`
+    rsync -Pazh --delete ../docs/build/$CDIR/html/ $HOME/public_html/Common-Lisp-Programs/$CDIR 
+    if [[ `hostname` == "mnasoft-00" ]]
+    then
+	echo "mnasoft-00"
+  #     sh ~/bin/pi-html
+    fi
+    if [[ `hostname` == "N118383" ]]
+    then
+	echo "N118383"
+        CPL="//n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs"
+	mkdir -p $CPL/$CDIR
+	rsync -Pazh --delete ../docs/build/$CDIR/html/ $CPL/$CDIR
+     fi
+#+END_SRC
+
+#+RESULTS: publish
+| sending                    | incremental | file | list       |         |   |        |      |            |         |          |               |
+| ./                         |             |      |            |         |   |        |      |            |         |          |               |
+| call-graph-icacls.gv       |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 185         | 100% | 0.00kB/s   | 0:00:00 |   | 185    | 100% | 0.00kB/s   | 0:00:00 | (xfr#1,  | to-chk=15/17) |
+| call-graph-icacls.gv.png   |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 22.25K      | 100% | 21.22MB/s  | 0:00:00 |   | 22.25K | 100% | 21.22MB/s  | 0:00:00 | (xfr#2,  | to-chk=14/17) |
+| class-graph-icacls.gv      |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 45          | 100% | 43.95kB/s  | 0:00:00 |   | 45     | 100% | 43.95kB/s  | 0:00:00 | (xfr#3,  | to-chk=13/17) |
+| class-graph-icacls.gv.png  |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 116         | 100% | 113.28kB/s | 0:00:00 |   | 116    | 100% | 113.28kB/s | 0:00:00 | (xfr#4,  | to-chk=12/17) |
+| symbol-graph-icacls.gv     |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 300         | 100% | 292.97kB/s | 0:00:00 |   | 300    | 100% | 292.97kB/s | 0:00:00 | (xfr#5,  | to-chk=11/17) |
+| symbol-graph-icacls.gv.png |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 32.77K      |  82% | 31.25MB/s  | 0:00:00 |   | 39.50K | 100% | 37.67MB/s  | 0:00:00 | (xfr#6,  | to-chk=10/17) |
+| system-graph-icacls.gv     |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 45          | 100% | 43.95kB/s  | 0:00:00 |   | 45     | 100% | 43.95kB/s  | 0:00:00 | (xfr#7,  | to-chk=9/17)  |
+| system-graph-icacls.gv.png |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 116         | 100% | 113.28kB/s | 0:00:00 |   | 116    | 100% | 113.28kB/s | 0:00:00 | (xfr#8,  | to-chk=8/17)  |
+| графы-icacls.html          |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 2.02K       | 100% | 1.93MB/s   | 0:00:00 |   | 2.02K  | 100% | 1.93MB/s   | 0:00:00 | (xfr#9,  | to-chk=7/17)  |
+| обзор.html                 |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 3.67K       | 100% | 3.50MB/s   | 0:00:00 |   | 3.67K  | 100% | 3.50MB/s   | 0:00:00 | (xfr#10, | to-chk=6/17)  |
+| переменные.html            |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 2.40K       | 100% | 2.29MB/s   | 0:00:00 |   | 2.40K  | 100% | 2.29MB/s   | 0:00:00 | (xfr#11, | to-chk=5/17)  |
+| функции.html               |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 3.40K       | 100% | 3.24MB/s   | 0:00:00 |   | 3.40K  | 100% | 3.24MB/s   | 0:00:00 | (xfr#12, | to-chk=4/17)  |
+| static/                    |             |      |            |         |   |        |      |            |         |          |               |
+| static/highlight.css       |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 1.57K       | 100% | 102.28kB/s | 0:00:00 |   | 1.57K  | 100% | 102.28kB/s | 0:00:00 | (xfr#13, | to-chk=2/17)  |
+| static/highlight.js        |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 22.99K      | 100% | 1.46MB/s   | 0:00:00 |   | 22.99K | 100% | 1.46MB/s   | 0:00:00 | (xfr#14, | to-chk=1/17)  |
+| static/style.css           |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 4.32K       | 100% | 136.15kB/s | 0:00:00 |   | 4.32K  | 100% | 136.15kB/s | 0:00:00 | (xfr#15, | to-chk=0/17)  |
+| N118383                    |             |      |            |         |   |        |      |            |         |          |               |
+| sending                    | incremental | file | list       |         |   |        |      |            |         |          |               |
+| ./                         |             |      |            |         |   |        |      |            |         |          |               |
+| call-graph-icacls.gv       |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 185         | 100% | 0.00kB/s   | 0:00:00 |   | 185    | 100% | 0.00kB/s   | 0:00:00 | (xfr#1,  | to-chk=15/17) |
+| call-graph-icacls.gv.png   |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 22.25K      | 100% | 21.22MB/s  | 0:00:00 |   | 22.25K | 100% | 21.22MB/s  | 0:00:00 | (xfr#2,  | to-chk=14/17) |
+| class-graph-icacls.gv      |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 45          | 100% | 43.95kB/s  | 0:00:00 |   | 45     | 100% | 43.95kB/s  | 0:00:00 | (xfr#3,  | to-chk=13/17) |
+| class-graph-icacls.gv.png  |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 116         | 100% | 113.28kB/s | 0:00:00 |   | 116    | 100% | 113.28kB/s | 0:00:00 | (xfr#4,  | to-chk=12/17) |
+| symbol-graph-icacls.gv     |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 300         | 100% | 292.97kB/s | 0:00:00 |   | 300    | 100% | 292.97kB/s | 0:00:00 | (xfr#5,  | to-chk=11/17) |
+| symbol-graph-icacls.gv.png |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 32.77K      |  82% | 2.08MB/s   | 0:00:00 |   | 39.50K | 100% | 2.51MB/s   | 0:00:00 | (xfr#6,  | to-chk=10/17) |
+| system-graph-icacls.gv     |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 45          | 100% | 2.93kB/s   | 0:00:00 |   | 45     | 100% | 2.93kB/s   | 0:00:00 | (xfr#7,  | to-chk=9/17)  |
+| system-graph-icacls.gv.png |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 116         | 100% | 7.55kB/s   | 0:00:00 |   | 116    | 100% | 7.55kB/s   | 0:00:00 | (xfr#8,  | to-chk=8/17)  |
+| графы-icacls.html          |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 2.02K       | 100% | 131.58kB/s | 0:00:00 |   | 2.02K  | 100% | 131.58kB/s | 0:00:00 | (xfr#9,  | to-chk=7/17)  |
+| обзор.html                 |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 3.67K       | 100% | 239.26kB/s | 0:00:00 |   | 3.67K  | 100% | 239.26kB/s | 0:00:00 | (xfr#10, | to-chk=6/17)  |
+| переменные.html            |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 2.40K       | 100% | 156.38kB/s | 0:00:00 |   | 2.40K  | 100% | 156.38kB/s | 0:00:00 | (xfr#11, | to-chk=5/17)  |
+| функции.html               |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 3.40K       | 100% | 221.22kB/s | 0:00:00 |   | 3.40K  | 100% | 221.22kB/s | 0:00:00 | (xfr#12, | to-chk=4/17)  |
+| static/                    |             |      |            |         |   |        |      |            |         |          |               |
+| static/highlight.css       |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 1.57K       | 100% | 24.74kB/s  | 0:00:00 |   | 1.57K  | 100% | 24.74kB/s  | 0:00:00 | (xfr#13, | to-chk=2/17)  |
+| static/highlight.js        |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 22.99K      | 100% | 362.10kB/s | 0:00:00 |   | 22.99K | 100% | 362.10kB/s | 0:00:00 | (xfr#14, | to-chk=1/17)  |
+| static/style.css           |             |      |            |         |   |        |      |            |         |          |               |
+|                            | 4.32K       | 100% | 68.08kB/s  | 0:00:00 |   | 4.32K  | 100% | 68.08kB/s  | 0:00:00 | (xfr#15, | to-chk=0/17)  |
