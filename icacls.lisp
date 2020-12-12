@@ -31,14 +31,14 @@
   "Список недействующих пользователей отдела 11")
 
 (defparameter *comp-lst*
-  '(                     ("n133875"     "vgvant")
-    ("n118944" "tdrach") ("n118940"     "svdavl")
-    ("n118955" "mvivan") ("n118965"     "opgolo")
-    (                     "n132866"     "dvryab")
-    ("n118389" "iptroy") ("n133037"     "avgris")
-    ("n000171" "avpete") ("n118957"     "gabank")
-    ("n118665" "evkoro") ("n133619"     "epiven")
-    ("n133148" "anfyod") ("ko11-118383" "namatv"))
+  '(                     ("n133875" "vgvant")
+    ("n118944" "tdrach") ("n118940" "svdavl")
+    ("n118955" "mvivan") ("n118965" "opgolo")
+    (                     "n132866" "dvryab")
+    ("n118389" "iptroy") ("n133037" "avgris")
+    ("n000171" "avpete") ("n118957" "gabank")
+    ("n118665" "evkoro") ("n133619" "epiven")
+    ("n133148" "anfyod") ("n118383" "namatv"))
   "Закрепление ПК за пользователями."
   )
 
@@ -48,13 +48,13 @@
 Пример использования:
 ;;;; (mkdir-home \"n118965\" \"home1\")
 "
-  (format out "icacls \\\\~A\\d$ /grant:r \"NT AUTHORITY\\система\":(OI)(CI)(F)~%" comp)
-  (format out "icacls \\\\~A\\d$ /grant:r \"BUILTIN\\Администраторы\":(OI)(CI)(F)~%" comp)
+  (format out "icacls \\\\~A\\d$ /grant:r \"NT AUTHORITY\\SYSTEM\":(OI)(CI)(F)~%" comp)
+  (format out "icacls \\\\~A\\d$ /grant:r \"BUILTIN\\Administrators\":(OI)(CI)(F)~%" comp)
   (format out "icacls \\\\~A\\d$ /grant:r \"ZORYA\\Отдел 11 - все\":(OI)(CI)(RX)~%" comp)
   (format out "~%")
   (format out "mkdir  \\\\~A\\d$\\~A~%" comp home)
-  (format out "icacls \\\\~A\\d$\\~A /grant:r \"NT AUTHORITY\\система\":(OI)(CI)(F)~%" comp home)
-  (format out "icacls \\\\~A\\d$\\~A /grant:r \"BUILTIN\\Администраторы\":(OI)(CI)(F)~%" comp home)
+  (format out "icacls \\\\~A\\d$\\~A /grant:r \"NT AUTHORITY\\SYSTEM\":(OI)(CI)(F)~%" comp home)
+  (format out "icacls \\\\~A\\d$\\~A /grant:r \"BUILTIN\\Administrators\":(OI)(CI)(F)~%" comp home)
   (format out "icacls \\\\~A\\d$\\~A /grant:r \"ZORYA\\Отдел 11 - все\":(OI)(CI)(RX)~%" comp home)
   (format out "~%")
   (mapc
