@@ -7,8 +7,6 @@
 	    mkdir-home
 	    mkdir-home-bat))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (in-package :icacls)
 
 ;;; "icacls" goes here. Hacks and glory await!
