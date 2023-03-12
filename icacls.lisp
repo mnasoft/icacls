@@ -1,6 +1,6 @@
 ;;;; icacls.lisp
 
-(defpackage #:icacls
+(defpackage :icacls
   (:use #:cl)
   (:export  mkdir-home-all-comps-bat
 	    help
@@ -9,7 +9,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package #:icacls)
+(in-package :icacls)
 
 ;;; "icacls" goes here. Hacks and glory await!
 
